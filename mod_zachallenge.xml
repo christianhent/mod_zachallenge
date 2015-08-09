@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="3.0"
+	client="site"
+	method="upgrade">
+	<name>mod_zachallenge</name>
+	<author>Christian Hent</author>
+	<creationDate>August 2015</creationDate>
+	<copyright>Copyright (C) 2015 Christian Hent</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>hent.dev@gmail.com</authorEmail>
+	<authorUrl>www.zenjiapps.com</authorUrl>
+	<version>1.0.5</version>
+	<description>MOD_ZACHALLENGE_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_zachallenge">mod_zachallenge.php</filename>
+		<folder>tmpl</folder>
+		<folder>language</folder>
+		<folder>vendor</folder>
+		<folder>cache</folder>
+		<filename>composer.json.txt</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_zachallenge.xml</filename>
+	</files>
+	<media folder="media" destination="mod_zachallenge">
+		<folder>css</folder>
+		<filename>index.html</filename>
+	</media>	
+	<scriptfile>zachallenge.script.php</scriptfile>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="challenge_id"
+					type="text"
+					class="btn-group"
+					default="21226496"
+					label="MOD_ZACHALLENGE_CHALLENGE_ID_LBL"
+					description="MOD_ZACHALLENGE_CHALLENGE_ID_DESC"
+					filter="INT"
+				/>
+				<field
+					name="cache"
+					type="text"
+					class="btn-group"
+					default="60"
+					label="MOD_ZACHALLENGE_CHALLENGE_CACHE_LBL"
+					description="MOD_ZACHALLENGE_CHALLENGE_CACHE_DESC"
+					filter="INT"
+				/>
+				<field
+					name="measure"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ZACHALLENGE_CHALLENGE_CONVERT2MILES_LBL"
+					description="MOD_ZACHALLENGE_CHALLENGE_CONVERT2MILES_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="show_avatars"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MOD_ZACHALLENGE_CHALLENGE_SHOW_AVATARS_LBL"
+					description="MOD_ZACHALLENGE_CHALLENGE_SHOW_AVATARS_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="textarea" rows="3"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
