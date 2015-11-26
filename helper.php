@@ -150,7 +150,7 @@ abstract class modZachallengeHelper
 			return $node->text();
     	});
 
-    	$user = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > table > tr > td > a.name')->each(function ($node)
+    	$user = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > table > tr > td > .name')->each(function ($node)
     	{
     		return $node->text();
     	});
@@ -162,12 +162,12 @@ abstract class modZachallengeHelper
     		return round(modZachallengeHelper::asNumeric($node->text()));
     	});
 
-    	$profile = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > table > tr > td > a.name')->each(function ($node)
+    	$profile = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > table > tr > td > .name')->each(function ($node)
     	{
     		return modZachallengeHelper::formatUri($node->attr('href'));
     	});
 
-    	$avatar = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > a.thumbnail > img.thumbnail')->each(function ($node)
+    	$avatar = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > .thumbnail > img.thumbnail')->each(function ($node)
     	{
     		return $node->attr('src');
     	});
