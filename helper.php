@@ -47,19 +47,19 @@ abstract class modZachallengeHelper
 					return false;
 				}
 
-				$result = json_decode(file_get_contents($cacheFilePath), true);
+				$data = json_decode(file_get_contents($cacheFilePath), true);
 
-				return (object)$result;
+				return (object)$data;
 			}
 			else
 			{
-				$result =  modZachallengeHelper::getChallengeData($client, $challenge, (int) $params->get('measure'));
+				$data =  modZachallengeHelper::getChallengeData($client, $challenge, (int) $params->get('measure'));
 
-				if ($result)
+				if ($data)
 				{
-					modZachallengeHelper::updateCacheFile($cacheFilePath, $result);
+					modZachallengeHelper::refreshCache($cacheFilePath, $data);
 
-					return $result;
+					return $data;
 				}
 
 				return false;
@@ -67,11 +67,11 @@ abstract class modZachallengeHelper
 		}
 		else
 		{
-			$result =  modZachallengeHelper::getChallengeData($client, $challenge, (int) $params->get('measure'));
+			$data =  modZachallengeHelper::getChallengeData($client, $challenge, (int) $params->get('measure'));
 
-			modZachallengeHelper::updateCacheFile($cacheFilePath, $result);
+			modZachallengeHelper::refreshCache($cacheFilePath, $data);
 
-			return $result;
+			return $data;
 		}
 	}
 
@@ -96,8 +96,8 @@ abstract class modZachallengeHelper
 		{
 			try
 			{
-				modZachallengeHelper::setProfile($response, $challenge, $measure);
-				modZachallengeHelper::setRanking($response, $challenge, $measure);
+				modZachallengeHelper::setChallengeProfile($response, $challenge, $measure);
+				modZachallengeHelper::setChallengeRanking($response, $challenge, $measure);
 			}
 			catch (Exception $e)
 			{
@@ -110,13 +110,13 @@ abstract class modZachallengeHelper
 		}
 	}
 
-	static function updateCacheFile($cacheFilePath, $result)
+	static function refreshCache($cacheFilePath, $data)
 	{
 		
 		file_put_contents($cacheFilePath, json_encode($result, true));
 	}
 
-	static function setProfile($response, $challenge, $measure)
+	static function setChallengeProfile($response, $challenge, $measure)
 	{
 		$challenge->name       = $response->filter('div.navigationHeading')->eq(0)->text();
 		$challenge->desc       = $response->filter('div.seeMoreText > p')->eq(0)->html();
@@ -143,7 +143,7 @@ abstract class modZachallengeHelper
 		return $challenge;
 	}
 
-	static function setRanking($response, $challenge, $measure)
+	static function setChallengeRanking($response, $challenge, $measure)
 	{
 		$position = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div > span.rank')->each(function ($node)
 		{
