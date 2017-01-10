@@ -113,7 +113,7 @@ abstract class modZachallengeHelper
 	static function refreshCache($cacheFilePath, $data)
 	{
 		
-		file_put_contents($cacheFilePath, json_encode($result, true));
+		file_put_contents($cacheFilePath, json_encode($data, true));
 	}
 
 	static function setChallengeProfile($response, $challenge, $measure)
@@ -129,10 +129,19 @@ abstract class modZachallengeHelper
 		$challenge->attn_count = modZachallengeHelper::asNumeric($response->filter('div.summaryPanel > div.item')->eq(0)->text());
 
 		# converts distance values to miles
-    	if ($measure == 1)
-    	{
-    		$challenge->odo = round(modZachallengeHelper::covertDistance2Miles($challenge->odo));
-    	}
+
+		# new
+		# convert to miles only, if response is in KM and the appropriate option is set to miles
+		if(!modZachallengeHelper::isMiles($response) && $measure == 1)
+		{
+			$challenge->odo = round(modZachallengeHelper::convertDistance2Miles($challenge->odo));
+		}
+
+		# convert to km only, if response is in miles and the appropriate option is set to km
+		if(modZachallengeHelper::isMiles($response) && $measure == 0)
+		{
+			$challenge->odo = round(modZachallengeHelper::convertDistance2KM($challenge->odo));
+		}
 
 		# prize
 		if($response->filter('div.info > div.type > div > span')->eq(2)->text() == 'Prize:')
@@ -154,8 +163,6 @@ abstract class modZachallengeHelper
     	{
     		return $node->text();
     	});
-
-
 
     	$distance = $response->filter('div.chart-area > div > div > ul > li.item > div.chart-row > div > div.nose')->each(function ($node)
     	{
@@ -184,14 +191,24 @@ abstract class modZachallengeHelper
     		);
     	}, $challenge->ranking);
 
-    	# converts distance values to miles
-    	if ($measure == 1)
-    	{
-    		foreach ($challenge->ranking as &$rank)
+
+		# convert to miles only, if response is in KM and the appropriate option is set to miles
+		if(!modZachallengeHelper::isMiles($response) && $measure == 1)
+		{
+			foreach ($challenge->ranking as &$rank)
     		{
-    			$rank['distance'] =  round(modZachallengeHelper::covertDistance2Miles($rank['distance']));
+    			$rank['distance'] =  round(modZachallengeHelper::convertDistance2Miles($rank['distance']));
     		}
-    	}
+		}
+
+		# convert to km only, if response is in miles and the appropriate option is set to km
+		if(modZachallengeHelper::isMiles($response) && $measure == 0)
+		{
+			foreach ($challenge->ranking as &$rank)
+    		{
+    			$rank['distance'] =  round(modZachallengeHelper::convertDistance2KM($rank['distance']));
+    		}
+		}
 
     	return $challenge;
     }
@@ -217,12 +234,31 @@ abstract class modZachallengeHelper
   		return $str;
 	}
 
-	static function covertDistance2Miles($distance)
+	static function isMiles($response)
+	{
+		if($response->filter('div.info > div.type > div > span')->eq(1)->text() == 'Most miles')
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	static function convertDistance2Miles($distance)
     {
         $ratio = 0.621371192;
 
         $miles = $distance * $ratio;
         
         return $miles;
+    }
+
+    static function convertDistance2KM($distance)
+    {
+        $ratio = 1.61;
+
+        $km = $distance * $ratio;
+        
+        return $km;
     }   
 }

@@ -6,12 +6,12 @@
 	method="upgrade">
 	<name>mod_zachallenge</name>
 	<author>Christian Hent</author>
-	<creationDate>August 2015</creationDate>
-	<copyright>Copyright (C) 2015 Christian Hent</copyright>
+	<creationDate>January 2017</creationDate>
+	<copyright>Copyright (C) 2017 Christian Hent</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>hent.dev@gmail.com</authorEmail>
 	<authorUrl>www.zenjiapps.com</authorUrl>
-	<version>1.0.5</version>
+	<version>1.0.7</version>
 	<description>MOD_ZACHALLENGE_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_zachallenge">mod_zachallenge.php</filename>
@@ -52,13 +52,13 @@
 				/>
 				<field
 					name="measure"
-					type="radio"
+					type="list"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ZACHALLENGE_CHALLENGE_CONVERT2MILES_LBL"
-					description="MOD_ZACHALLENGE_CHALLENGE_CONVERT2MILES_DESC">
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
+					label="MOD_ZACHALLENGE_CHALLENGE_UNIT_LBL"
+					description="MOD_ZACHALLENGE_CHALLENGE_UNIT_DESC">
+					<option value="1">MOD_ZACHALLENGE_CHALLENGE_UNIT_M</option>
+					<option value="0">MOD_ZACHALLENGE_CHALLENGE_UNIT_KM</option>
 				</field>
 				<field
 					name="show_avatars"
