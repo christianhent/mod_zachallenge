@@ -128,19 +128,26 @@ abstract class modZachallengeHelper
 		$challenge->odo        = modZachallengeHelper::asNumeric($response->filter('div.summaryPanel > div.item')->eq(2)->text());
 		$challenge->attn_count = modZachallengeHelper::asNumeric($response->filter('div.summaryPanel > div.item')->eq(0)->text());
 
-		# converts distance values to miles
-
-		# new
 		# convert to miles only, if response is in KM and the appropriate option is set to miles
 		if(!modZachallengeHelper::isMiles($response) && $measure == 1)
 		{
 			$challenge->odo = round(modZachallengeHelper::convertDistance2Miles($challenge->odo));
+
+			if ($challenge->goal === 'Most km')
+			{
+				$challenge->goal = 'Most miles';
+			}
 		}
 
 		# convert to km only, if response is in miles and the appropriate option is set to km
 		if(modZachallengeHelper::isMiles($response) && $measure == 0)
 		{
 			$challenge->odo = round(modZachallengeHelper::convertDistance2KM($challenge->odo));
+
+			if ($challenge->goal === 'Most miles')
+			{
+				$challenge->goal = 'Most km';
+			}
 		}
 
 		# prize
